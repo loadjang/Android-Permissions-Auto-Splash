@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 /**
  * Created by an-yeong-gug on 16. 7. 7..
+ * https://github.com/loadjang/Android-Permissions-Auto-Splash/
  */
 public class Permissions {
 
