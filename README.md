@@ -2,10 +2,10 @@
 Android Very Easy Permissions Request Auto Load  First Activity  Or Need Permission Request
 
 
-public class Splash extends AppCompatActivity {
-    Permissions permission;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public class Splash extends AppCompatActivity {
+        Permissions permission;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
