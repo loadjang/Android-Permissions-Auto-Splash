@@ -40,8 +40,9 @@ Auto code
 
 
 use need Request Permission very simple 
-        {
 
+
+          {
         Permissions.Build build=  new Permissions.Build();
         Permissions.permissionsCallback callback=new Permissions.permissionsCallback() {
             @Override
