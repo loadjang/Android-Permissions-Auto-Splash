@@ -1,11 +1,9 @@
 # Android-Permissions-Auto-Splash
 Android Very Easy Permissions Request Auto Load  First Activity  Or Need Permission Request
 
+Auto code
 
-below code end
 
-
-    public class Splash extends AppCompatActivity {
         Permissions permission;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +14,8 @@ below code end
         Permissions.permissionsCallback callback=new Permissions.permissionsCallback() {
             @Override
             public void onRequestPermissionsResult_GRANTED() {
-                goMain();
+                /* All Permission Granted
+                */
             }
 
             @Override
@@ -37,17 +36,54 @@ below code end
 
 
     }
+    
 
-    public void goMain(){
-        Handler handler=new Handler();
-        handler.postDelayed(new Runnable() {
+
+use need Request Permission very simple 
+        {
+
+        Permissions.Build build=  new Permissions.Build();
+        Permissions.permissionsCallback callback=new Permissions.permissionsCallback() {
             @Override
-            public void run() {
-
-                Intent intent=new Intent(Splash.this,MainActivity.class);
-                startActivity(intent);
-                finish();
+            public void onRequestPermissionsResult_GRANTED() {
+                /*  Permission Granted
+                */
             }
-        },2000);
-    }
-    }
+
+            @Override
+            public void onRequestPermissionsResult_DENIED() {
+             /*
+                    
+             */
+            }
+        };
+        permission=build.setContext(Splash.this).setAllFlag(false).setCallback(callback).setsetForceFlag(false).
+          setMypermission(new String[]{Manifest.permission.CALL_PHONE}).
+        build();
+        
+        Button delbtn=(Button)findViewById(R.id.delbtn);
+         delbtn.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // Check Permissions
+                 permission.checkPermissions();
+            }
+        });
+     
+        }
+        }
+  
+  
+             @Override
+            public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+             permission.onRequestPermissionsResult(requestCode,permissions,grantResults);
+
+
+          }
+    
+    
+        
+
+   
