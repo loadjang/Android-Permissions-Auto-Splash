@@ -42,7 +42,7 @@ Auto code
 use need Request Permission very simple 
 
 
-          {
+        {
         Permissions.Build build=  new Permissions.Build();
         Permissions.permissionsCallback callback=new Permissions.permissionsCallback() {
             @Override
@@ -59,11 +59,10 @@ use need Request Permission very simple
             }
         };
         permission=build.setContext(Splash.this).setAllFlag(false).setCallback(callback).setsetForceFlag(false).
-          setMypermission(new String[]{Manifest.permission.CALL_PHONE}).
-        build();
+          setMypermission(new String[]{Manifest.permission.CALL_PHONE}).build();
         
         Button delbtn=(Button)findViewById(R.id.delbtn);
-         delbtn.setOnClickListener(new OnClickListener() {
+        delbtn.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -74,14 +73,9 @@ use need Request Permission very simple
      
         }
         }
-  
-  
-             @Override
-            public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+         @Override
+         public void onRequestPermissionsResult(int requestCode,  String permissions[], int[] grantResults) {
              permission.onRequestPermissionsResult(requestCode,permissions,grantResults);
-
-
           }
     
     
