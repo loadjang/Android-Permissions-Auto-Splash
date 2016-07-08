@@ -2,6 +2,9 @@
 Android Very Easy Permissions Request Auto Load  First Activity  Or Need Permission Request
 
 
+below code end
+
+
     public class Splash extends AppCompatActivity {
         Permissions permission;
         @Override
