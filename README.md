@@ -47,4 +47,4 @@ Android Very Easy Permissions Request Auto Load  First Activity  Or Need Permiss
             }
         },2000);
     }
-}
+    }
