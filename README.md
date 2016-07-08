@@ -1,5 +1,8 @@
 # Android-Permissions-Auto-Splash
-Android Very Easy Permissions Request Auto Load  First Activity  Or Need Permission Request
+Android Very Easy Permissions Request All Auto Load  First Activity  Or Need Permission Request
+
+안드로이드 퍼미션을 미니페스트에서 읽어서 첫 액티비티에서 자동으로 처리해주는 라이브러리입니다.
+자동 처리이외에도 상황별 퍼미션처리 가 쉽게 가능합니다.
 
 Auto code
 
