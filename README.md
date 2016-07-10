@@ -49,13 +49,14 @@ use need Request Permission very simple
             @Override
             public void onRequestPermissionsResult_GRANTED() {
                 /*  Permission Granted
+                 Permissions.getAlert(context,"승인").show();
                 */
             }
 
             @Override
             public void onRequestPermissionsResult_DENIED() {
              /*
-                    
+                    Permissions.getAlert(context,"거부").show();
              */
             }
         };
