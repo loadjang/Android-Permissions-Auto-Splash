@@ -8,10 +8,7 @@ Auto code
 
 
         Permissions permission;
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+   
 
         Permissions.Build build=  new Permissions.Build();
         Permissions.permissionsCallback callback=new Permissions.permissionsCallback() {
@@ -29,12 +26,13 @@ Auto code
             }
         };
         permission=build.setContext(Splash.this).setAllFlag(true).setCallback(callback).setForceFlag(true).build();
-        permission.checkPermissions();
+        permission.checkPermissions(100);
 
     }
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
+                                           
         permission.onRequestPermissionsResult(requestCode,permissions,grantResults);
 
 
@@ -70,7 +68,7 @@ use need Request Permission very simple
             @Override
             public void onClick(View v) {
                 // Check Permissions
-                 permission.checkPermissions();
+                 permission.checkPermissions(200);
             }
         });
      
@@ -78,7 +76,10 @@ use need Request Permission very simple
         }
          @Override
          public void onRequestPermissionsResult(int requestCode,  String permissions[], int[] grantResults) {
-             permission.onRequestPermissionsResult(requestCode,permissions,grantResults);
+           
+             if(requestCode==200){
+                  permission.onRequestPermissionsResult(requestCode,permissions,grantResults);
+             }
           }
     
     
