@@ -25,7 +25,7 @@ Auto code
              */
             }
         };
-        permission=build.setContext(Splash.this).setAllFlag(true).setCallback(callback).setForceFlag(true).build();
+        permission=build.setContext(Splash.this).setAllFlag(true).setMessage("모든권한을 허용하여야 앱이실행됩니다.").setCallback(callback).setForceFlag(true).build();
         permission.checkPermissions(100);
 
     }
