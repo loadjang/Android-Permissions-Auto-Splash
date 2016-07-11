@@ -1,6 +1,7 @@
 package com.kr.permissions;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -8,31 +9,28 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by an-yeong-gug on 16. 7. 7..
- * https://github.com/loadjang/Android-Permissions-Auto-Splash/
  */
+
 public class Permissions {
-
-
-    public static class Build{
-        private  Boolean forceflag = false;
+    public static class Build {
+        private Boolean forceflag = false;
         private Boolean allflag = false;
         permissionsCallback callback;
 
         private ArrayList<String> mypermission = null;
         private AppCompatActivity context = null;
+
         public Build setForceFlag(Boolean flag) {
             forceflag = flag;
-        /*
-         Callback change
-         */
 
             return this;
         }
@@ -48,23 +46,47 @@ public class Permissions {
             return this;
         }
 
-        public Permissions build() {
+        public Build setMessage(String msg){
+            message=msg;
+            return this;
+        }
+        private String message="모든 권한을 허용한후에 앱이용이 가능합니다.";
+        Permissions newinst = null;
 
-            Permissions newinst = new Permissions();
+        public Build setMyPermissions(String[] permissions) {
+            mypermission = new ArrayList<String>();
+            for (int i = 0; i < permissions.length; i++) {
+                mypermission.add(permissions[i]);
+
+
+            }
+
+
+            return this;
+
+        }
+
+
+        public Permissions build() {
+            newinst = new Permissions();
+
+
             newinst.setContext(context);
             newinst.setAllFlag(allflag);
             newinst.setForceFlag(forceflag);
-            if(allflag) {
-                newinst.setMyPermission();
-            }
+            newinst.setmessage(message);
 
-            else {
+            if (allflag) {
+                newinst.setMyPermission();
+            } else {
                 String[] test = new String[mypermission.size()];
                 test = mypermission.toArray(test);
                 newinst.setMypermission(test);
             }
             newinst.setCallback(callback);
-
+            context = null;
+            allflag = false;
+            forceflag = false;
 
             return newinst;
         }
@@ -77,6 +99,7 @@ public class Permissions {
 
 
     }
+
     private Boolean forceflag = false;
     private Boolean allflag = false;
     permissionsCallback callback;
@@ -100,6 +123,27 @@ public class Permissions {
      forceflag callback
      */
 
+    public static AlertDialog.Builder getAlert(Context _context, String message) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(_context);
+        builder.setTitle("알림");
+        builder.setMessage(message);
+        builder.setPositiveButton("확인",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+
+                    }
+                });
+
+        return builder;
+
+
+    }
+    private void setmessage(String msg){
+        message=msg;
+    }
+    private String message="모든 권한을 허용한후에 앱이용이 가능합니다.";
     Permissions.permissionsCallback forceCallback = new Permissions.permissionsCallback() {
 
         @Override
@@ -111,7 +155,7 @@ public class Permissions {
         public void onRequestPermissionsResult_DENIED() {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("알림");
-            builder.setMessage("모든 권한을 허용한후에 앱이용이 가능합니다.");
+            builder.setMessage(message);
             builder.setPositiveButton("설정",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -171,7 +215,7 @@ public class Permissions {
 
     public Permissions setAllFlag(Boolean flag) {
         allflag = flag;
-        if(allflag) {
+        if (allflag) {
             setMyPermission();
         }
         return this;
@@ -180,11 +224,9 @@ public class Permissions {
     public Permissions setMypermission(String[] permission) {
 
 
-
-            mypermission = new ArrayList<String>();
-            for (int i = 0; i < permission.length; i++) {
-                mypermission.add(permission[i]);
-
+        mypermission = new ArrayList<String>();
+        for (int i = 0; i < permission.length; i++) {
+            mypermission.add(permission[i]);
 
 
         }
@@ -206,7 +248,7 @@ public class Permissions {
                         if (p.equals(dang)) {
 
 
-                            if (ContextCompat.checkSelfPermission(context,
+                            if (ActivityCompat.checkSelfPermission(context,
                                     dang)
                                     != PackageManager.PERMISSION_GRANTED) {
                                 dangerflag = true;
@@ -247,7 +289,7 @@ public class Permissions {
     }
 
 
-    public void checkPermissions() {
+    public void checkPermissions(int requestcode) {
 
         // Here, thisActivity is the current activity
         Boolean boolallcheckpermission = true;
@@ -256,12 +298,18 @@ public class Permissions {
 
             String permission = mypermission.get(i);
 
-            if (ContextCompat.checkSelfPermission(context,
+            if (ActivityCompat.checkSelfPermission(context,
                     permission)
-                    != PackageManager.PERMISSION_GRANTED) {
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.e("removep",permission);
+                mypermission.remove(i);
 
+            }
+            else{
                 boolallcheckpermission = false;
-                break;
+
+
+
             }
 
 
@@ -270,7 +318,7 @@ public class Permissions {
 
         if (boolallcheckpermission == false) {
 
-            requestPermissions();
+            requestPermissions(requestcode);
 
 
         } else {
@@ -282,16 +330,16 @@ public class Permissions {
 
     }
 
-    public void requestPermissions() {
+    public void requestPermissions(int requestcode) {
 
         String[] permissions = new String[mypermission.size()];
         mypermission.toArray(permissions);
+        Log.e("per", Arrays.toString(permissions));
         ActivityCompat.requestPermissions(context,
                 permissions,
-                MY_PERMISSIONS_REQUEST);
+                requestcode);
     }
 
-    final int MY_PERMISSIONS_REQUEST = 100;
 
 
     public interface permissionsCallback {
@@ -308,45 +356,42 @@ public class Permissions {
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
 
+        // If request is cancelled, the result arrays are empty.
+        Boolean allbool = true;
 
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST: {
-                // If request is cancelled, the result arrays are empty.
-                Boolean allbool = true;
-
-                for (int i = 0; i < grantResults.length; i++) {
-                    if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                        allbool = false;
-                        break;
-                    }
-                }
-
-
-                if (allbool) {
-
-                    callback.onRequestPermissionsResult_GRANTED();
-
-                    // Toast.makeText(getApplicationContext(),"모든 권한이 설정되었습니다",Toast.LENGTH_SHORT).show();
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-
-                    if (forceflag) {
-                        forceCallback.onRequestPermissionsResult_DENIED();
-                    } else {
-                        callback.onRequestPermissionsResult_DENIED();
-                    }
-
-                }
+        for (int i = 0; i < grantResults.length; i++) {
+            if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                allbool = false;
+                break;
             }
-            return;
         }
 
 
-        // other 'case' lines to check for other
-        // permissions this app might request
+        if (allbool) {
+
+            callback.onRequestPermissionsResult_GRANTED();
+
+            // Toast.makeText(getApplicationContext(),"모든 권한이 설정되었습니다",Toast.LENGTH_SHORT).show();
+
+            // permission was granted, yay! Do the
+            // contacts-related task you need to do.
+
+        } else {
+
+            if (forceflag) {
+                forceCallback.onRequestPermissionsResult_DENIED();
+            } else {
+                callback.onRequestPermissionsResult_DENIED();
+            }
+
+        }
+
+        return;
     }
+
+
+    // other 'case' lines to check for other
+    // permissions this app might request
+
 }
 

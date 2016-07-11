@@ -3,6 +3,7 @@ package com.kr.permissions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 public class Splash extends AppCompatActivity {
@@ -26,16 +27,15 @@ public class Splash extends AppCompatActivity {
              */
             }
         };
-        permission=build.setContext(Splash.this).setAllFlag(true).setCallback(callback).setForceFlag(true).build();
-        permission.checkPermissions();
+        permission=build.setContext(Splash.this).setMessage("모든권한을 설정후에 이용이가능합니다.").setAllFlag(true).setCallback(callback).setForceFlag(true).build();
+        permission.checkPermissions(100);
 
     }
+
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permission.onRequestPermissionsResult(requestCode,permissions,grantResults);
-
-
     }
 
     public void goMain(){
